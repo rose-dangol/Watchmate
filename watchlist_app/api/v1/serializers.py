@@ -1,12 +1,19 @@
 from rest_framework import serializers
-from watchlist_app.models import WatchList, StreamPlatform
+from watchlist_app.models import WatchList, StreamPlatform, Review
 
 def check_len(value):
     if len(value) < 3:
         raise serializers.ValidationError("Must be at least 3 character")
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
 class WatchListSerializer(serializers.ModelSerializer):
     name_length = serializers.SerializerMethodField()
+    review_watchlist = ReviewSerializer(many=True, read_only=True)
+    # review_watchlist = serializers.StringRelatedField(many=True, read_only=True)
     class Meta:
         model = WatchList
         # fields = "__all__" sabai fields aucha
@@ -16,8 +23,8 @@ class WatchListSerializer(serializers.ModelSerializer):
         return (len(obj.title))
 
 class StreamPlatformSerializer(serializers.HyperlinkedModelSerializer):
-    watchlist_stream_platform = WatchListSerializer(many=True, read_only=True)
-    # watchlist_stream_platform = serializers.StringRelatedField(many=True, read_only=True)
+    # watchlist_stream_platform = WatchListSerializer(many=True, read_only=True)
+    watchlist_stream_platform = serializers.StringRelatedField(many=True, read_only=True)
     # watchlist_stream_platform = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # watchlist_stream_platform = serializers.HyperlinkedRelatedField(many=True, read_only=True, view_name='movie-detail')
     # watchlist_stream_platform = serializers.SlugRelatedField(many=True, read_only=True, slug_field='title')

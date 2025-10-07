@@ -1,18 +1,12 @@
 from idlelib.debugobj_r import remote_object_tree_item
-
-from django.core.serializers import serialize
-from django.db.models.fields import return_None
 from django.shortcuts import render, get_object_or_404
-from rest_framework import status
+from rest_framework import status, mixins, request
 from rest_framework.decorators import api_view
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from watchlist_app.api.v1.serializers import WatchListSerializer, StreamPlatformSerializer
-from watchlist_app.models import WatchList, StreamPlatform
-
-
-# Create your views here.
+from watchlist_app.api.v1.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
+from watchlist_app.models import WatchList, StreamPlatform, Review
 
 class MovieListAV(APIView):
     def get(self,request):
@@ -26,6 +20,7 @@ class MovieListAV(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 class MovieDetailAV(APIView):
     def get(self,request,pk):
         movie = get_object_or_404(WatchList, id=pk)
@@ -63,6 +58,7 @@ class StreamPlatformAV(APIView):
             return Response(serializer.data)
         else:
             return Response(serializer.errors)
+
 class StreamPlatformDetailAV(APIView):
     def get(self,request,pk):
         platforms = get_object_or_404(StreamPlatform,id=pk)
@@ -88,6 +84,44 @@ class StreamPlatformDetailAV(APIView):
         platform = get_object_or_404(StreamPlatform,id=pk)
         platform.delete()
         return Response({"message":"platform deleted"})
+
+class ReviewList(mixins.ListModelMixin,mixins.CreateModelMixin,GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    def get(self,*args,**kwargs):
+        return self.list(self,*args,**kwargs)
+    def post(self,request,*args,**kwargs):
+        return self.create(request,*args, **kwargs)
+
+class ReviewDetail(mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get(self,*args,**kwargs):
+        print("Args", args)
+        return self.retrieve(request, *args, **kwargs)
+    def put(self,request,*args,**kwargs):
+        return self.update(request, *args, **kwargs)
+    def patch(self,request,*args, **kwargs):
+
+        return self.partial_update(request, *args, **kwargs)
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+# class ReviewListAV(APIView):
+#     def get(self,request):
+#         reviews= Review.objects.all()
+#         serializer = ReviewSerializer(reviews, many=True)
+#         return Response(serializer.data)
+#     def post(self,request,id):
+#         serializer = ReviewSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data)
+#         else:
+#             return Response(serializer.errors)
+
 # @api_view(['GET', 'POST'])
 # def movie_list(request):
 #     if request.method.lower()=='get':
