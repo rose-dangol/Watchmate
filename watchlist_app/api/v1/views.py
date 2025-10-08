@@ -1,13 +1,16 @@
 from idlelib.debugobj_r import remote_object_tree_item
 
+from django.core.serializers import serialize
 from django.db.models.fields import return_None
 from django.shortcuts import render, get_object_or_404
 from django.template.base import kwarg_re
 from rest_framework import status, mixins, request
 from rest_framework.decorators import api_view
-from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, \
+    DestroyAPIView, ListCreateAPIView,RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import viewsets
 from watchlist_app.api.v1.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.models import WatchList, StreamPlatform, Review
 
@@ -110,49 +113,74 @@ class MovieDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelM
     def delete(self,request,*args,**kwargs):
         return self.destroy(request,*args,**kwargs)
 
-class StreamPlatforms(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+#STREAM PLATFORM MODEL VIEWSET
+class StreamPlatformModelViewSet(viewsets.ModelViewSet):
     queryset = StreamPlatform.objects.all()
     serializer_class = StreamPlatformSerializer
-    def get(self,request,*args,**kwargs):
-        return self.list(request,*args,**kwargs)
-    def post(self,request,*args,**kwargs):
-        return self.create(request,*args,**kwargs)
+    #get_queryset garera override garni
+    #and action anusar diff queryset rakhni try
+# class StreamPlatforms(GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
+#     queryset = StreamPlatform.objects.all()
+#     serializer_class = StreamPlatformSerializer
+#     def get(self,request,*args,**kwargs):
+#         return self.list(request,*args,**kwargs)
+#     def post(self,request,*args,**kwargs):
+#         return self.create(request,*args,**kwargs)
+#
+# class StreamPlatformDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
+#     queryset = StreamPlatform.objects.all()
+#     serializer_class = StreamPlatformSerializer
+#     def get(self,request,*args,**kwargs):
+#         return self.retrieve(request,*args,**kwargs)
+#     def put(self,request,*args,**kwargs):
+#         return self.update(request,*args,**kwargs)
+#     def patch(self,request,*args,**kwargs):
+#         return self.partial_update(request,*args,**kwargs)
+#     def delete(self,request,*args,**kwargs):
+#         return self.destroy(request,*args,**kwargs)
 
-class StreamPlatformDetail(GenericAPIView, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
-    queryset = StreamPlatform.objects.all()
-    serializer_class = StreamPlatformSerializer
-    def get(self,request,*args,**kwargs):
-        return self.retrieve(request,*args,**kwargs)
-    def put(self,request,*args,**kwargs):
-        return self.update(request,*args,**kwargs)
-    def patch(self,request,*args,**kwargs):
-        return self.partial_update(request,*args,**kwargs)
-    def delete(self,request,*args,**kwargs):
-        return self.destroy(request,*args,**kwargs)
+class ReviewListViewSet(viewsets.ViewSet): #euta class ma multiple views + direct routing banauni
+    def list(self,request):
+        # queryset = Review.objects.filter(active=True)
+        queryset = Review.objects.all()
+        serializer= ReviewSerializer(queryset,many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    def retrieve(self,request,pk):
+        obj = get_object_or_404(Review,pk=pk)
+        serializer = ReviewSerializer(obj)
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
-class ReviewList(mixins.ListModelMixin,mixins.CreateModelMixin,GenericAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
-    def get(self,*args,**kwargs):
-        return self.list(self,*args,**kwargs)
-    def post(self,request,*args,**kwargs):
-        return self.create(request,*args, **kwargs)
-class ReviewListAPIView(ListAPIView)
 
-class ReviewDetail(mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAPIView):
-    queryset = Review.objects.all()
-    serializer_class = ReviewSerializer
+#Concrete API View
+# class ReviewListAPIView(ListCreateAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+# class ReviewDetail(RetrieveUpdateDestroyAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
 
-    def get(self,*args,**kwargs):
-        print("Args", args)
-        return self.retrieve(request, *args, **kwargs)
-    def put(self,request,*args,**kwargs):
-        return self.update(request, *args, **kwargs)
-    def patch(self,request,*args, **kwargs):
+## GENERIC VIEW
+# class ReviewList(mixins.ListModelMixin,mixins.CreateModelMixin,GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     def get(self,*args,**kwargs):
+#         return self.list(self,*args,**kwargs)
+#     def post(self,request,*args,**kwargs):
+#         return self.create(request,*args, **kwargs)
 
-        return self.partial_update(request, *args, **kwargs)
-    def delete(self,request,*args,**kwargs):
-        return self.destroy(request, *args, **kwargs)
+# class ReviewDetail(mixins.DestroyModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAPIView):
+#     queryset = Review.objects.all()
+#     serializer_class = ReviewSerializer
+#     def get(self,*args,**kwargs):
+#         print("Args", args)
+#         return self.retrieve(request, *args, **kwargs)
+#     def put(self,request,*args,**kwargs):
+#         return self.update(request, *args, **kwargs)
+#     def patch(self,request,*args, **kwargs):
+#
+#         return self.partial_update(request, *args, **kwargs)
+#     def delete(self,request,*args,**kwargs):
+#         return self.destroy(request, *args, **kwargs)
 
 
 # class ReviewListAV(APIView):
