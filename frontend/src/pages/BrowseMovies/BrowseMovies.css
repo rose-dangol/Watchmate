@@ -1,0 +1,160 @@
+.browse-movies {
+  min-height: 100vh;
+  background-color: #141414;
+  color: #fff;
+  padding: 2rem;
+}
+
+.browse-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.browse-header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(45deg, #e50914, #ff6b6b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.browse-header p {
+  font-size: 1.2rem;
+  color: #888;
+}
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.movie-card {
+  background-color: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  /* transition: transform 0.3s, box-shadow 0.3s; */
+  cursor: pointer;
+}
+
+
+.movie-poster {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.movie-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+/* .movie-card:hover .movie-poster img {
+  transform: scale(1.05);
+} */
+
+.movie-info {
+  padding: 1.5rem;
+}
+
+.movie-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.75rem;
+  gap: 0.5rem;
+}
+
+.movie-title {
+  font-size: 1.3rem;
+  margin: 0;
+  flex: 1;
+  line-height: 1.3;
+}
+
+.movie-rating {
+  font-size: 1rem;
+  color: #ffd700;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.movie-meta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.movie-genre {
+  padding: 0.25rem 0.75rem;
+  background-color: #333;
+  border-radius: 12px;
+  font-size: 0.85rem;
+}
+
+.movie-description {
+  font-size: 0.95rem;
+  color: #ccc;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.movie-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid #333;
+}
+
+.movie-platform {
+  font-size: 0.9rem;
+  color: #e50914;
+  font-weight: bold;
+}
+
+.btn-details {
+  padding: 0.5rem 1.5rem;
+  background-color: transparent;
+  color: #fff;
+  border: 2px solid #e50914;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* .btn-details:hover {
+  background-color: #e50914;
+  transform: scale(1.05);
+} */
+.btn-details a{
+    text-decoration: none;
+    color: #fff;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .browse-header h1 {
+    font-size: 2rem;
+  }
+
+  .movies-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .browse-movies {
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,101 @@
+.form-container {
+  background-image: url("/images/auth-background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 90.8vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.form-box {
+  color: white;
+  background-color: black !important;
+  opacity: 85%;
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 400px;
+}
+.form-headings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.form-heading1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-heading2 {
+  font-size: 0.875rem;
+  color: #D61E26 !important;
+}
+
+.toggle-btns {
+  display: flex;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+.toggle-btns button {
+  width: 50%;
+  padding: 5px;
+}
+.toggle-active {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  /* border-radius: 8px; */
+  border-bottom: #28256a 2px solid;
+  color: #28256a;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-inactive {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  /* border-radius: 8px; */
+  /* background-color: #959ba6; */
+  /* border-bottom: #28256a; */
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle-active:hover,
+.toggle-inactive:hover {
+  opacity: 0.9;
+}
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+.form-inputs label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.form-inputs input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+.login,
+.register {
+  width: 100%;
+  padding: 0.5rem;
+  background-color: #e50914;
+  color: white;
+  font-weight: 650;
+  outline: none;
+}
