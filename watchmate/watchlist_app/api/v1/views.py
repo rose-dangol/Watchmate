@@ -1,5 +1,3 @@
-from http.cookiejar import user_domain_match
-
 from django.core.serializers import serialize
 from django.db.models.fields import return_None
 from django.shortcuts import render, get_object_or_404
@@ -8,6 +6,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, mixins, request, filters
 from rest_framework.decorators import api_view, throttle_classes
 from rest_framework.generics import GenericAPIView, ListAPIView, CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListCreateAPIView,RetrieveUpdateDestroyAPIView
+from rest_framework.pagination import LimitOffsetPagination, PageNumberPagination
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, AllowAny
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle, UserRateThrottle, ScopedRateThrottle
@@ -16,6 +15,8 @@ from rest_framework import viewsets
 from rest_framework.viewsets import GenericViewSet
 
 from user_app.api.v1.throttling import ReviewListThrottle
+from watchlist_app.api.v1.pagination import ReviewPageNumberPagination, ReviewLimitOffsetPagination, \
+    ReviewCursorPagination
 from watchlist_app.api.v1.permissions import *
 from watchlist_app.api.v1.serializers import WatchListSerializer, StreamPlatformSerializer, ReviewSerializer
 from watchlist_app.models import WatchList, StreamPlatform, Review
@@ -103,9 +104,11 @@ from rest_framework.exceptions import ValidationError
 #Generic Views
 
 #MovieList ko GENERIC VIEWS
+
 class MovieList(GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
     queryset = WatchList.objects.all()
     serializer_class = WatchListSerializer
+    # filterset_fields = ['title']
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['title']
     ordering_fields = ['id']
@@ -175,6 +178,12 @@ class ReviewModelViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     # permission_classes = [IsAuthenticated]
+
+    pagination_class = ReviewCursorPagination
+
+    # pagination_class = PageNumberPagination
+    # pagination_class = LimitOffsetPagination
+    # page_size = 2
 
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     filterset_fields = ['rating', 'active','user__username','watchlist__title','watchlist__id']

@@ -75,33 +75,6 @@ function BrowseMovies(props) {
               </div>
             );
           })}
-
-          {/* <div className="movie-card">
-          <div className="movie-poster">
-            <img
-              src="https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg"
-              alt="Fight Club"
-            />
-          </div>
-          <div className="movie-info">
-            <div className="movie-header">
-              <h3 className="movie-title">Fight Club</h3>
-              <span className="movie-rating">⭐ 8.8</span>
-            </div>
-            <div className="movie-meta">
-              <span className="movie-year">1999</span>
-              <span className="movie-genre">Drama</span>
-            </div>
-            <p className="movie-description">
-              An insomniac office worker and a soap salesman form an underground
-              fight club that evolves into much more.
-            </p>
-            <div className="movie-footer">
-              <span className="movie-platform">Netflix</span>
-              <button className="btn-details">View Details</button>
-            </div>
-          </div>
-        </div> */}
         </div>
       </div>
     </>

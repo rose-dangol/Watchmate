@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 LOCAL_APPS = ['watchlist_app']
-THIRD_PARTY_APPS = ['rest_framework','corsheaders','rest_framework.authtoken','rest_framework_simplejwt','django_filters',]
+THIRD_PARTY_APPS = ['rest_framework','corsheaders','rest_framework.authtoken','rest_framework_simplejwt','django_filters','rest_framework_swagger','drf_yasg']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -149,12 +149,14 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.ScopedRateThrottle',
         # 'rest_framework.throttling.UserRateThrottle'
     ],
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     # 'DEFAULT_THROTTLE_RATES': {
     #     'anon': '1/day',
     #     'user': '2/day',
     #     'review-list':'3/day'
     # }
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 2  #kati ota data dekhauni
 }
 SIMPLE_JWT= {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1)

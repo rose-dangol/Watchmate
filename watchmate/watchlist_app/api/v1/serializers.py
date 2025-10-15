@@ -15,6 +15,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 class ReviewSerializer(serializers.ModelSerializer):
     user= UserSerializer(read_only=True)
+    watchlist = serializers.StringRelatedField(read_only=True) #cause i want to display "movie title" and tyo review ta
+                                                                # euta movie ko matra hunxa so many=True not needed
     class Meta:
         model = Review
         fields = '__all__'

@@ -19,6 +19,7 @@ class WatchList(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     stream_platform = models.ForeignKey(StreamPlatform, on_delete=models.CASCADE, blank=True, null=True, related_name="watchlist_stream_platform")
     image = models.ImageField(default='movie-cover/default.jpg', upload_to='movie-cover')
+
     def __str__(self):
         return self.title
 
